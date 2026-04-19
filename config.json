@@ -1,0 +1,6 @@
+{
+  "min_length": 8,
+  "max_length": 64,
+  "min_strength": 2,
+  "password_file": "passwords.txt"
+}
