@@ -1,3 +1,4 @@
+from zxcvbn import zxcvbn
 import secrets
 import string
 import json
@@ -10,6 +11,11 @@ def load_config():
 def generate_password(length):
     chars = string.ascii_letters + string.digits + string.punctuation
     return ''.join(secrets.choice(chars) for _ in range(length))
+
+def check_strength(password):
+    result = zxcvbn(password)
+    labels = ["Very weak", "Weak", "Fair", "Strong", "Very strong"]
+    return result["score"], labels[result["score"]]
 
 def save_password(password, filename):
     with open(filename, "a") as f:
@@ -29,6 +35,8 @@ def main():
 
     password = generate_password(length)
     print(f"Generated: {password}")
+    score, label = check_strength(password)
+    print(f"Strength:  {label} ({score}/4)")
     save_password(password, config["password_file"])
 
 if __name__ == "__main__":
