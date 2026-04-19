@@ -1,4 +1,5 @@
 from zxcvbn import zxcvbn
+import pyperclip
 import secrets
 import string
 import json
@@ -26,6 +27,7 @@ def main():
     config = load_config()
     parser = argparse.ArgumentParser(description="Password Generator")
     parser.add_argument("-l", "--length", type=int, help="Password length")
+    parser.add_argument("-c", "--copy", action="store_true", help="Copy to clipboard")
     args = parser.parse_args()
 
     length = args.length or 16
@@ -37,6 +39,9 @@ def main():
     print(f"Generated: {password}")
     score, label = check_strength(password)
     print(f"Strength:  {label} ({score}/4)")
+    if args.copy:
+        pyperclip.copy(password)
+    print("Copied to clipboard!")
     save_password(password, config["password_file"])
 
 if __name__ == "__main__":
